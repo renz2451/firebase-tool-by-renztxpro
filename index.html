@@ -83,6 +83,10 @@
             font-size: 0.9rem;
             overflow-x: auto;
         }
+
+        input[data-filled="true"], textarea[data-filled="true"] {
+            background-color: rgba(0, 255, 0, 0.2); /* Green background when data is filled */
+        }
     </style>
 </head>
 <body>
@@ -107,7 +111,7 @@
         <button onclick="execute()">Execute Request</button>
         <h2>Response:</h2>
         <pre id="response">Response will appear here...</pre>
-        <button onclick="copyResponse()">Copy Response</button> <!-- Copy Response button -->
+        <button onclick="copyToClipboard()">Copy Response</button> <!-- Copy Response button -->
     </div>
 
     <script>
@@ -148,7 +152,8 @@
                 const element = document.getElementById(elementId);
                 if (element) {
                     element.value = text;
-                    alert(`${elementId.charAt(0).toUpperCase() + elementId.slice(1)} pasted!`);
+                    element.setAttribute("data-filled", "true"); // Add filled attribute
+                    alert(`Pasted into ${elementId}!`);
                 } else {
                     alert(`Element with ID ${elementId} not found.`);
                 }
@@ -157,7 +162,7 @@
             });
         }
 
-        function copyResponse() {
+        function copyToClipboard() {
             const responseBox = document.getElementById('response');
             const text = responseBox.textContent;
 

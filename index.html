@@ -5,17 +5,18 @@
         const data = document.getElementById('data').value.trim();
         const responseBox = document.getElementById('response');
 
+        // Check if URL is provided
         if (!url) {
             alert("Please enter a valid database URL.");
             return;
         }
 
+        // Check if data is required and validate JSON for PUT or PATCH methods
         if ((method === "PUT" || method === "PATCH") && !data) {
             alert("Please enter data for PUT or EDIT requests.");
             return;
         }
 
-        // Validate JSON if data is required
         if ((method === "PUT" || method === "PATCH") && !isValidJSON(data)) {
             alert("Invalid JSON format. Please enter valid JSON data.");
             return;
@@ -23,16 +24,26 @@
 
         try {
             responseBox.textContent = "Processing...";
-            const options = { method };
+
+            // Prepare request options
+            const options = { 
+                method, 
+                headers: { 'Content-Type': 'application/json' }
+            };
 
             if (method === "PUT" || method === "PATCH") {
                 options.body = data;
-                options.headers = { 'Content-Type': 'application/json' };
             }
 
-            const response = await fetch(url + ".json", options);
-            const result = await response.json();
+            // Make the API request
+            const response = await fetch(`${url}.json`, options);
 
+            // Handle response
+            if (!response.ok) {
+                throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
+            }
+
+            const result = await response.json();
             responseBox.textContent = JSON.stringify(result, null, 4);
         } catch (error) {
             responseBox.textContent = `Error: ${error.message}`;

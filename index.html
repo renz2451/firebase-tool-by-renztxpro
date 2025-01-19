@@ -78,11 +78,9 @@
             width: 250px;
             position: fixed;
             top: 0;
-            left: -250px;
+            left: 0; /* Drawer is visible by default */
             background-color: #333;
             color: #fff;
-            overflow-x: hidden;
-            transition: 0.3s;
             padding-top: 20px;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
         }
@@ -100,16 +98,6 @@
             background-color: #575757;
         }
 
-        /* Hamburger icon to open drawer */
-        #menu-btn {
-            font-size: 30px;
-            cursor: pointer;
-            color: #00ff00;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-        }
-
         /* Facebook Image and link */
         .social-media {
             display: flex;
@@ -122,6 +110,12 @@
             height: 40px;
             margin-right: 10px;
         }
+
+        /* Menu button - hidden as drawer is visible */
+        #menu-btn {
+            display: none; /* No need for this button anymore */
+        }
+
     </style>
 </head>
 <body>
@@ -152,29 +146,15 @@
         <p>Developed by RENZTXPRO</p>
     </div>
 
-    <!-- Drawer -->
+    <!-- Drawer (Always visible) -->
     <div id="drawer">
-        <a href="javascript:void(0)" class="close-btn" onclick="closeDrawer()">×</a>
         <div class="social-media">
             <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo">
             <a href="https://www.facebook.com/100015.02.2008.renz" target="_blank">Visit Facebook Profile</a>
         </div>
     </div>
 
-    <!-- Menu button to open the drawer -->
-    <span id="menu-btn" onclick="openDrawer()">☰</span>
-
     <script>
-        // Function to open the drawer
-        function openDrawer() {
-            document.getElementById("drawer").style.left = "0";
-        }
-
-        // Function to close the drawer
-        function closeDrawer() {
-            document.getElementById("drawer").style.left = "-250px";
-        }
-
         async function execute() {
             const url = document.getElementById('url').value.trim();
             const method = document.getElementById('method').value;

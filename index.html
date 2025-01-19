@@ -78,11 +78,12 @@
             width: 250px;
             position: fixed;
             top: 0;
-            left: 0; /* Drawer is visible by default */
+            left: -250px; /* Drawer is initially off-screen */
             background-color: #333;
             color: #fff;
             padding-top: 20px;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+            transition: left 0.3s ease-in-out; /* Smooth slide-in */
         }
 
         #drawer a {
@@ -98,7 +99,6 @@
             background-color: #575757;
         }
 
-        /* Facebook Image and link */
         .social-media {
             display: flex;
             align-items: center;
@@ -111,9 +111,22 @@
             margin-right: 10px;
         }
 
-        /* Menu button - hidden as drawer is visible */
+        /* Button to show the drawer */
         #menu-btn {
-            display: none; /* No need for this button anymore */
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #00ff00;
+            color: black;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        #menu-btn:hover {
+            background-color: #575757;
         }
 
     </style>
@@ -146,7 +159,10 @@
         <p>Developed by RENZTXPRO</p>
     </div>
 
-    <!-- Drawer (Always visible) -->
+    <!-- Button to show the drawer -->
+    <button id="menu-btn" onclick="toggleDrawer()">☰ Open Drawer</button>
+
+    <!-- Drawer -->
     <div id="drawer">
         <div class="social-media">
             <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo">
@@ -198,6 +214,17 @@
             }).catch(err => {
                 alert("Failed to copy response: " + err.message);
             });
+        }
+
+        function toggleDrawer() {
+            const drawer = document.getElementById('drawer');
+            const currentLeft = drawer.style.left;
+            // Toggle the drawer visibility
+            if (currentLeft === '0px') {
+                drawer.style.left = '-250px'; // Slide out
+            } else {
+                drawer.style.left = '0'; // Slide in
+            }
         }
     </script>
 </body>

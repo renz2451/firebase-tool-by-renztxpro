@@ -9,12 +9,47 @@
             margin: 0;
             padding: 0;
             font-family: 'Courier New', Courier, monospace;
-            background-color: #0c0c0c;
+            background-color: black;
             color: #00ff00;
             text-align: center;
             overflow-x: hidden;
+            position: relative;
+            height: 100vh;
         }
 
+        /* Background animation for hacker theme */
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            z-index: -1;
+            animation: digitalRain 5s linear infinite;
+        }
+
+        @keyframes digitalRain {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 0 100%;
+            }
+        }
+
+        .background::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 200%;
+            background: url('https://www.ionos.com/digitalguide/fileadmin/DigitalGuide/Images/Matrix_1.svg') repeat;
+            animation: rain 0.5s linear infinite;
+        }
+
+        /* Title Animation */
         h1 {
             margin: 0;
             padding: 20px;
@@ -23,7 +58,7 @@
             font-size: 36px;
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-shadow: 0 0 10px #00ff00;
+            text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
             animation: typing 3s steps(30) 1s infinite normal both;
         }
 
@@ -39,6 +74,7 @@
             border: 2px solid #00ff00;
             box-shadow: 0 0 10px #00ff00;
             background-color: black;
+            z-index: 1;
         }
 
         label {
@@ -131,6 +167,7 @@
     </style>
 </head>
 <body>
+    <div class="background"></div>
     <h1>Firebase Database Tool</h1>
     <div class="container">
         <label for="url">Enter Database URL:</label>

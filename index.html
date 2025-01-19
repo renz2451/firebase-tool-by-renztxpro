@@ -101,8 +101,8 @@
 <body>
     <div class="glass-container">
         <h1>Firebase Tool</h1>
-        <label for="url">Enter Database URL:</label>
-        <input type="text" id="url" placeholder="https://your-database.firebaseio.com/" maxlength="100" oninput="updateBackground()">
+        <label for="url">Enter Firebase Database URL:</label>
+        <input type="text" id="url" placeholder="https://your-project-id.firebaseio.com/your-node" maxlength="100" oninput="updateBackground()">
         <button onclick="pasteText('url')">Paste URL</button> <!-- Paste URL button -->
 
         <label for="method">Select Request Method:</label>
@@ -149,7 +149,7 @@
             const responseBox = document.getElementById('response');
 
             if (!url) {
-                alert("Please enter a valid database URL.");
+                alert("Please enter a valid Firebase database URL.");
                 return;
             }
 

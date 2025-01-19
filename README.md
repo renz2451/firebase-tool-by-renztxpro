@@ -20,7 +20,7 @@ This is a simple Firebase database tool that allows you to interact with your Fi
    - Under "Source," select the `main` branch and click "Save."
 
 3. **Access Your Website**
-   - Your website will be live at `https://yourusername.github.io/repository-name`.
+   - Your website will be live at `https://renztxpro.github.io/repository-name`.
 
 ## Customize the Tool
 

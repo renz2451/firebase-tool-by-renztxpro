@@ -21,28 +21,6 @@
             flex-direction: column;
         }
 
-        .matrix-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .matrix-background div {
-            position: absolute;
-            font-size: 2vw;
-            color: rgba(0, 255, 0, 0.6);
-            animation: rain 5s linear infinite;
-        }
-
-        @keyframes rain {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(200%); }
-        }
-
         .glass-container {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -53,7 +31,6 @@
             width: 90%;
             max-width: 500px;
             text-align: center;
-            margin: auto;
         }
 
         h1 {
@@ -80,16 +57,10 @@
             color: #ffffff;
             background: rgba(255, 255, 255, 0.1);
             box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.1);
-            box-sizing: border-box;
-        }
-
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            border: 1px solid #00ff00;
         }
 
         button {
-            margin-top: 20px;
+            margin-top: 10px;
             background: linear-gradient(90deg, #00ff00, #007f00);
             color: #000;
             font-weight: 600;
@@ -112,64 +83,14 @@
             font-size: 0.9rem;
             overflow-x: auto;
         }
-
-        .footer {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.8rem;
-            opacity: 0.7;
-            text-align: center;
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 1.5rem;
-            }
-
-            label {
-                font-size: 0.9rem;
-            }
-
-            input, textarea, select, button {
-                font-size: 0.9rem;
-            }
-
-            .matrix-background div {
-                font-size: 4vw;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .glass-container {
-                padding: 15px;
-            }
-
-            h1 {
-                font-size: 1.2rem;
-            }
-
-            pre {
-                font-size: 0.8rem;
-            }
-        }
     </style>
 </head>
 <body>
-    <div class="matrix-background">
-        <div style="left: 10%; animation-duration: 4s;">1010</div>
-        <div style="left: 25%; animation-duration: 6s;">ABCD</div>
-        <div style="left: 40%; animation-duration: 5s;">XYZW</div>
-        <div style="left: 60%; animation-duration: 3.5s;">7654</div>
-        <div style="left: 80%; animation-duration: 4.5s;">QRST</div>
-    </div>
-
     <div class="glass-container">
         <h1>Firebase Tool</h1>
         <label for="url">Enter Database URL:</label>
         <input type="text" id="url" placeholder="https://your-database.firebaseio.com/" maxlength="100">
-        <button onclick="copyText('url')">Copy URL</button> <!-- Copy URL button added -->
+        <button onclick="pasteText('url')">Paste URL</button> <!-- Paste URL button -->
 
         <label for="method">Select Request Method:</label>
         <select id="method">
@@ -178,19 +99,15 @@
             <option value="DELETE">DELETE</option>
             <option value="PATCH">EDIT</option>
         </select>
-        <button onclick="copyText('method')">Copy Method</button> <!-- Copy Method button added -->
 
         <label for="data">Enter Data (JSON format):</label>
         <textarea id="data" rows="4" placeholder='{"key": "value"}' maxlength="500"></textarea>
-        <button onclick="copyText('data')">Copy Data</button> <!-- Copy Data button added -->
+        <button onclick="pasteText('data')">Paste Data</button> <!-- Paste Data button -->
 
         <button onclick="execute()">Execute Request</button>
         <h2>Response:</h2>
         <pre id="response">Response will appear here...</pre>
-        <button onclick="copyToClipboard()">Copy Response</button> <!-- Copy Response button added -->
     </div>
-
-    <div class="footer">Developed by RENZTXPRO</div>
 
     <script>
         async function execute() {
@@ -219,41 +136,24 @@
 
                 const response = await fetch(url + ".json", options);
                 const result = await response.json();
-             
                 responseBox.textContent = JSON.stringify(result, null, 4);
             } catch (error) {
                 responseBox.textContent = `Error: ${error.message}`;
             }
         }
 
-        function copyToClipboard() {
-            const responseBox = document.getElementById('response');
-            const text = responseBox.textContent;
-
-            if (text && text !== "Response will appear here...") {
-                navigator.clipboard.writeText(text).then(() => {
-                    alert("Response copied to clipboard!");
-                }).catch((error) => {
-                    alert("Failed to copy response: " + error);
-                });
-            } else {
-                alert("No response to copy.");
-            }
-        }
-
-        function copyText(elementId) {
-            const element = document.getElementById(elementId);
-            const text = element.value || element.textContent;
-
-            if (text) {
-                navigator.clipboard.writeText(text).then(() => {
-                    alert(`${elementId} copied to clipboard!`);
-                }).catch((error) => {
-                    alert("Failed to copy: " + error);
-                });
-            } else {
-                alert("Nothing to copy.");
-            }
+        function pasteText(elementId) {
+            navigator.clipboard.readText().then((text) => {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.value = text;
+                    alert(`Pasted into ${elementId}!`);
+                } else {
+                    alert(`Element with ID ${elementId} not found.`);
+                }
+            }).catch((error) => {
+                alert("Failed to paste text: " + error);
+            });
         }
     </script>
 </body>

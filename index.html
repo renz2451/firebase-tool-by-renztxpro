@@ -32,7 +32,7 @@
 
         .matrix-background div {
             position: absolute;
-            font-size: 18px;
+            font-size: 2vw; /* Scales with screen size */
             color: rgba(0, 255, 0, 0.6);
             animation: rain 5s linear infinite;
         }
@@ -46,7 +46,7 @@
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 15px;
-            padding: 30px;
+            padding: 20px;
             backdrop-filter: blur(10px);
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
             width: 90%;
@@ -55,7 +55,7 @@
         }
 
         h1 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             margin-bottom: 20px;
             color: #00ff00;
             text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
@@ -65,6 +65,7 @@
             display: block;
             margin-top: 10px;
             font-weight: 600;
+            font-size: 1rem;
         }
 
         input, textarea, select, button {
@@ -105,6 +106,8 @@
             padding: 15px;
             text-align: left;
             color: #00ff00;
+            font-size: 0.9rem;
+            overflow-x: auto;
         }
 
         .footer {
@@ -118,20 +121,41 @@
                 font-size: 1.5rem;
             }
 
+            label {
+                font-size: 0.9rem;
+            }
+
+            input, textarea, select, button {
+                font-size: 0.9rem;
+            }
+
+            .matrix-background div {
+                font-size: 4vw; /* Larger text for smaller devices */
+            }
+        }
+
+        @media (max-width: 480px) {
             .glass-container {
-                padding: 20px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            pre {
+                font-size: 0.8rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="matrix-background">
-        <!-- Falling matrix characters -->
-        <div style="left: 10%; animation-duration: 4s;">1 0 1 0</div>
-        <div style="left: 25%; animation-duration: 6s;">A B C D</div>
-        <div style="left: 40%; animation-duration: 5s;">Y Z X W</div>
-        <div style="left: 60%; animation-duration: 3.5s;">7 6 5 4</div>
-        <div style="left: 80%; animation-duration: 4.5s;">Q R S T</div>
+        <div style="left: 10%; animation-duration: 4s;">1010</div>
+        <div style="left: 25%; animation-duration: 6s;">ABCD</div>
+        <div style="left: 40%; animation-duration: 5s;">XYZW</div>
+        <div style="left: 60%; animation-duration: 3.5s;">7654</div>
+        <div style="left: 80%; animation-duration: 4.5s;">QRST</div>
     </div>
 
     <div class="glass-container">

@@ -1,224 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firebase Tool</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Courier New', Courier, monospace;
-            background-color: black;
-            color: #00ff00;
-            text-align: center;
-        }
+// Mock data for MLBB account search
+const mlbbMockData = {
+    "123456": {
+        name: "ShadowSlayer",
+        level: 30,
+        rank: "Mythic",
+        skins: 45,
+        accountAge: "2 years"
+    },
+    "654321": {
+        name: "LightBringer",
+        level: 50,
+        rank: "Legend",
+        skins: 60,
+        accountAge: "4 years"
+    },
+    "789123": {
+        name: "DragonFury",
+        level: 15,
+        rank: "Epic",
+        skins: 25,
+        accountAge: "1 year"
+    }
+};
 
-        h1 {
-            margin: 0;
-            padding: 20px;
-            background-color: #00ff00;
-            color: black;
-            font-size: 24px;
-            text-transform: uppercase;
-        }
+function searchMLBB() {
+    const mlbbId = document.getElementById('mlbbId').value.trim();
+    const mlbbDetails = document.getElementById('mlbbDetails');
 
-        .container {
-            padding: 20px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+    if (!mlbbId) {
+        alert("Please enter a valid Mobile Legends ID.");
+        return;
+    }
 
-        label {
-            text-align: left;
-            display: block;
-            margin: 10px 0 5px;
-        }
-
-        input, textarea, select, button {
-            width: 100%;
-            background-color: black;
-            color: #00ff00;
-            border: 1px solid #00ff00;
-            padding: 10px;
-            font-size: 16px;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-        }
-
-        button {
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #00ff00;
-            color: black;
-        }
-
-        pre {
-            background-color: black;
-            border: 1px solid #00ff00;
-            color: #00ff00;
-            padding: 10px;
-            margin-top: 20px;
-            overflow-x: auto;
-            text-align: left;
-        }
-
-        .footer {
-            margin-top: 20px;
-            font-size: 12px;
-        }
-
-        /* Drawer styles */
-        #drawer {
-            height: 100%;
-            width: 250px;
-            position: fixed;
-            top: 0;
-            left: -250px;
-            background-color: #333;
-            color: #fff;
-            overflow-x: hidden;
-            transition: 0.3s;
-            padding-top: 20px;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
-        }
-
-        #drawer a {
-            padding: 10px 15px;
-            text-decoration: none;
-            font-size: 18px;
-            color: #00ff00;
-            display: block;
-            transition: 0.3s;
-        }
-
-        #drawer a:hover {
-            background-color: #575757;
-        }
-
-        /* Hamburger icon to open drawer */
-        #menu-btn {
-            font-size: 30px;
-            cursor: pointer;
-            color: #00ff00;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-        }
-
-        /* Facebook Image and link */
-        .social-media {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-        }
-
-        .social-media img {
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
-        }
-    </style>
-</head>
-<body>
-    <h1>Firebase Database Tool</h1>
-    <div class="container">
-        <label for="url">Enter Database URL:</label>
-        <input type="text" id="url" placeholder="https://your-database.firebaseio.com/">
-
-        <label for="method">Select Request Method:</label>
-        <select id="method">
-            <option value="GET">GET</option>
-            <option value="PUT">PUT</option>
-            <option value="DELETE">DELETE</option>
-            <option value="PATCH">EDIT</option>
-        </select>
-
-        <label for="data">Enter Data (JSON format):</label>
-        <textarea id="data" rows="5" placeholder='{"example": "value"}'></textarea>
-
-        <button onclick="execute()">Execute Request</button>
-        <button onclick="copyResponse()">Copy Response</button>
-
-        <h2>Response:</h2>
-        <pre id="response">Response will appear here...</pre>
-    </div>
-
-    <div class="footer">
-        <p>Developed by RENZTXPRO</p>
-    </div>
-
-    <!-- Drawer -->
-    <div id="drawer">
-        <a href="javascript:void(0)" class="close-btn" onclick="closeDrawer()">×</a>
-        <div class="social-media">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo">
-            <a href="https://www.facebook.com/100015.02.2008.renz" target="_blank">Visit Facebook Profile</a>
-        </div>
-    </div>
-
-    <!-- Menu button to open the drawer -->
-    <span id="menu-btn" onclick="openDrawer()">☰</span>
-
-    <script>
-        // Function to open the drawer
-        function openDrawer() {
-            document.getElementById("drawer").style.left = "0";
-        }
-
-        // Function to close the drawer
-        function closeDrawer() {
-            document.getElementById("drawer").style.left = "-250px";
-        }
-
-        async function execute() {
-            const url = document.getElementById('url').value.trim();
-            const method = document.getElementById('method').value;
-            const data = document.getElementById('data').value.trim();
-            const responseBox = document.getElementById('response');
-
-            if (!url) {
-                alert("Please enter a valid database URL.");
-                return;
-            }
-
-            if ((method === "PUT" || method === "PATCH") && !data) {
-                alert("Please enter data for PUT or EDIT requests.");
-                return;
-            }
-
-            try {
-                responseBox.textContent = "Processing...";
-                const options = { method };
-                if (method === "PUT" || method === "PATCH") {
-                    options.body = data;
-                    options.headers = { 'Content-Type': 'application/json' };
-                }
-
-                const response = await fetch(url + ".json", options);
-                const result = await response.json();
-                responseBox.textContent = JSON.stringify(result, null, 4);
-            } catch (error) {
-                responseBox.textContent = `Error: ${error.message}`;
-            }
-        }
-
-        function copyResponse() {
-            const response = document.getElementById('response').textContent;
-            if (response.trim() === "Response will appear here...") {
-                alert("No response to copy.");
-                return;
-            }
-            navigator.clipboard.writeText(response).then(() => {
-                alert("Response copied to clipboard.");
-            }).catch(err => {
-                alert("Failed to copy response: " + err.message);
-            });
-        }
-    </script>
-</body>
-</html>
+    // Simulate fetching MLBB account data
+    if (mlbbMockData[mlbbId]) {
+        const account = mlbbMockData[mlbbId];
+        const accountInfo = `
+Name: ${account.name}
+Level: ${account.level}
+Rank: ${account.rank}
+Skins Owned: ${account.skins}
+Account Age: ${account.accountAge}
+        `;
+        mlbbDetails.textContent = accountInfo;
+    } else {
+        mlbbDetails.textContent = "Account not found. Please check the ID.";
+    }
+}

@@ -1,49 +1,34 @@
-// Mock data for MLBB account search
-const mlbbMockData = {
-    "123456": {
-        name: "ShadowSlayer",
-        level: 30,
-        rank: "Mythic",
-        skins: 45,
-        accountAge: "2 years"
-    },
-    "654321": {
-        name: "LightBringer",
-        level: 50,
-        rank: "Legend",
-        skins: 60,
-        accountAge: "4 years"
-    },
-    "789123": {
-        name: "DragonFury",
-        level: 15,
-        rank: "Epic",
-        skins: 25,
-        accountAge: "1 year"
-    }
-};
+<div class="container">
+    <!-- Firebase Tool Section -->
+    <label for="url">Enter Database URL:</label>
+    <input type="text" id="url" placeholder="https://your-database.firebaseio.com/">
 
-function searchMLBB() {
-    const mlbbId = document.getElementById('mlbbId').value.trim();
-    const mlbbDetails = document.getElementById('mlbbDetails');
+    <label for="method">Select Request Method:</label>
+    <select id="method">
+        <option value="GET">GET</option>
+        <option value="PUT">PUT</option>
+        <option value="DELETE">DELETE</option>
+        <option value="PATCH">EDIT</option>
+    </select>
 
-    if (!mlbbId) {
-        alert("Please enter a valid Mobile Legends ID.");
-        return;
-    }
+    <label for="data">Enter Data (JSON format):</label>
+    <textarea id="data" rows="5" placeholder='{"example": "value"}'></textarea>
 
-    // Simulate fetching MLBB account data
-    if (mlbbMockData[mlbbId]) {
-        const account = mlbbMockData[mlbbId];
-        const accountInfo = `
-Name: ${account.name}
-Level: ${account.level}
-Rank: ${account.rank}
-Skins Owned: ${account.skins}
-Account Age: ${account.accountAge}
-        `;
-        mlbbDetails.textContent = accountInfo;
-    } else {
-        mlbbDetails.textContent = "Account not found. Please check the ID.";
-    }
-}
+    <button onclick="execute()">Execute Request</button>
+    <button onclick="copyResponse()">Copy Response</button>
+
+    <h2>Response:</h2>
+    <pre id="response">Response will appear here...</pre>
+</div>
+
+<!-- New MLBB Account Search Feature -->
+<div class="container">
+    <h2>Search MLBB Account</h2>
+    <label for="mlbbId">Enter Mobile Legends ID:</label>
+    <input type="text" id="mlbbId" placeholder="Enter Account ID">
+
+    <button onclick="searchMLBB()">Search Account</button>
+
+    <h3>Account Details:</h3>
+    <pre id="mlbbDetails">Account details will appear here...</pre>
+</div>

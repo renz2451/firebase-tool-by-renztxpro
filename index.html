@@ -51,7 +51,7 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
             width: 90%;
-            max-width: 500px; /* Adjusted max-width */
+            max-width: 500px;
             text-align: center;
             margin: auto;
         }
@@ -80,7 +80,7 @@
             color: #ffffff;
             background: rgba(255, 255, 255, 0.1);
             box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.1);
-            box-sizing: border-box; /* Ensure padding doesn't affect width */
+            box-sizing: border-box;
         }
 
         input:focus, textarea:focus, select:focus {
@@ -184,6 +184,7 @@
         <button onclick="execute()">Execute Request</button>
         <h2>Response:</h2>
         <pre id="response">Response will appear here...</pre>
+        <button onclick="copyToClipboard()">Copy Response</button> <!-- Copy button added -->
     </div>
 
     <div class="footer">Developed by RENZTXPRO</div>
@@ -219,6 +220,21 @@
                 responseBox.textContent = JSON.stringify(result, null, 4);
             } catch (error) {
                 responseBox.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        function copyToClipboard() {
+            const responseBox = document.getElementById('response');
+            const text = responseBox.textContent;
+
+            if (text && text !== "Response will appear here...") {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert("Response copied to clipboard!");
+                }).catch((error) => {
+                    alert("Failed to copy response: " + error);
+                });
+            } else {
+                alert("No response to copy.");
             }
         }
     </script>

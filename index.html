@@ -21,6 +21,7 @@
             color: black;
             font-size: 24px;
             text-transform: uppercase;
+            cursor: pointer; /* Make the header clickable */
         }
 
         .container {
@@ -110,29 +111,10 @@
             height: 40px;
             margin-right: 10px;
         }
-
-        /* Button to show the drawer */
-        #menu-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background-color: #00ff00;
-            color: black;
-            border: none;
-            padding: 10px 15px;
-            font-size: 16px;
-            cursor: pointer;
-            z-index: 10;
-        }
-
-        #menu-btn:hover {
-            background-color: #575757;
-        }
-
     </style>
 </head>
 <body>
-    <h1>Firebase Database Tool</h1>
+    <h1 id="header">Firebase Database Tool</h1>
     <div class="container">
         <label for="url">Enter Database URL:</label>
         <input type="text" id="url" placeholder="https://your-database.firebaseio.com/">
@@ -158,9 +140,6 @@
     <div class="footer">
         <p>Developed by RENZTXPRO</p>
     </div>
-
-    <!-- Button to show the drawer -->
-    <button id="menu-btn" onclick="toggleDrawer()">☰ Open Drawer</button>
 
     <!-- Drawer -->
     <div id="drawer">
@@ -216,7 +195,8 @@
             });
         }
 
-        function toggleDrawer() {
+        // Toggle the drawer visibility when the header is clicked
+        document.getElementById('header').addEventListener('click', function() {
             const drawer = document.getElementById('drawer');
             const currentLeft = drawer.style.left;
             // Toggle the drawer visibility
@@ -225,7 +205,7 @@
             } else {
                 drawer.style.left = '0'; // Slide in
             }
-        }
+        });
     </script>
 </body>
 </html>

@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Tool</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace;
+            background-color: black;
+            color: #00ff00;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            padding: 20px;
+            background-color: #00ff00;
+            color: black;
+            font-size: 24px;
+            text-transform: uppercase;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        label {
+            text-align: left;
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input, textarea, select, button {
+            width: 100%;
+            background-color: black;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        button {
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #00ff00;
+            color: black;
+        }
+
+        pre {
+            background-color: black;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            padding: 10px;
+            margin-top: 20px;
+            overflow-x: auto;
+            text-align: left;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Firebase Database Tool</h1>
+    <div class="container">
+        <label for="url">Enter Database URL:</label>
+        <input type="text" id="url" placeholder="https://your-database.firebaseio.com/">
+
+        <label for="method">Select Request Method:</label>
+        <select id="method">
+            <option value="GET">GET</option>
+            <option value="PUT">PUT</option>
+            <option value="DELETE">DELETE</option>
+            <option value="PATCH">EDIT</option>
+        </select>
+
+        <label for="data">Enter Data (JSON format):</label>
+        <textarea id="data" rows="5" placeholder='{"example": "value"}'></textarea>
+
+        <button onclick="execute()">Execute Request</button>
+        <button onclick="copyResponse()">Copy Response</button>
+
+        <h2>Response:</h2>
+        <pre id="response">Response will appear here...</pre>
+    </div>
+
+    <div class="footer">
+        <p>Developed by Your Name</p>
+    </div>
+
+    <script>
+        async function execute() {
+            const url = document.getElementById('url').value.trim();
+            const method = document.getElementById('method').value;
+            const data = document.getElementById('data').value.trim();
+            const responseBox = document.getElementById('response');
+
+            if (!url) {
+                alert("Please enter a valid database URL.");
+                return;
+            }
+
+            if ((method === "PUT" || method === "PATCH") && !data) {
+                alert("Please enter data for PUT or EDIT requests.");
+                return;
+            }
+
+            try {
+                responseBox.textContent = "Processing...";
+                const options = { method };
+                if (method === "PUT" || method === "PATCH") {
+                    options.body = data;
+                    options.headers = { 'Content-Type': 'application/json' };
+                }
+
+                const response = await fetch(url + ".json", options);
+                const result = await response.json();
+                responseBox.textContent = JSON.stringify(result, null, 4);
+            } catch (error) {
+                responseBox.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        function copyResponse() {
+            const response = document.getElementById('response').textContent;
+            if (response.trim() === "Response will appear here...") {
+                alert("No response to copy.");
+                return;
+            }
+            navigator.clipboard.writeText(response).then(() => {
+                alert("Response copied to clipboard.");
+            }).catch(err => {
+                alert("Failed to copy response: " + err.message);
+            });
+        }
+    </script>
+</body>
+</html>

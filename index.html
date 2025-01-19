@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firebase Destroyer Tool</title>
+    <title>Firebase Destroyer Tool</title> <!-- Updated title -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
@@ -108,7 +108,7 @@
 </head>
 <body>
     <div class="glass-container">
-        <h1>Firebase Tool</h1>
+        <h1>Firebase Destroyer Tool</h1> <!-- Updated title -->
         <label for="url">Enter Firebase Database URL:</label>
         <input type="text" id="url" placeholder="https://your-project-id.firebaseio.com/your-node" oninput="updateBackground()">
         <button onclick="pasteText('url')">Paste URL</button> <!-- Paste URL button -->
@@ -122,7 +122,7 @@
         </select>
 
         <label for="data">Enter Data (JSON format):</label>
-        <textarea id="data" placeholder='{"key": "value"}' style="font-size: 1rem; padding: 15px;" oninput="updateBackground()"></textarea>
+        <textarea id="data" placeholder='{"key": "value"}' oninput="updateBackground()"></textarea>
         <button onclick="pasteText('data')">Paste Data</button> <!-- Paste Data button -->
 
         <button onclick="execute()">Execute Request</button>

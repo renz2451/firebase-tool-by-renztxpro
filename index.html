@@ -9,9 +9,10 @@
             margin: 0;
             padding: 0;
             font-family: 'Courier New', Courier, monospace;
-            background-color: black;
+            background-color: #0c0c0c;
             color: #00ff00;
             text-align: center;
+            overflow-x: hidden;
         }
 
         h1 {
@@ -19,14 +20,25 @@
             padding: 20px;
             background-color: #00ff00;
             color: black;
-            font-size: 24px;
+            font-size: 36px;
             text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #00ff00;
+            animation: typing 3s steps(30) 1s infinite normal both;
+        }
+
+        @keyframes typing {
+            0% { width: 0; }
+            100% { width: 100%; }
         }
 
         .container {
             padding: 20px;
             max-width: 600px;
             margin: 0 auto;
+            border: 2px solid #00ff00;
+            box-shadow: 0 0 10px #00ff00;
+            background-color: black;
         }
 
         label {
@@ -44,6 +56,12 @@
             font-size: 16px;
             margin-bottom: 15px;
             box-sizing: border-box;
+            text-shadow: 0 0 5px #00ff00;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 5px #00ff00;
         }
 
         button {
@@ -55,6 +73,7 @@
         button:hover {
             background-color: #00ff00;
             color: black;
+            text-shadow: 0 0 10px #00ff00;
         }
 
         pre {
@@ -81,22 +100,32 @@
             text-decoration: none;
             margin: 10px;
             font-size: 18px;
+            text-shadow: 0 0 5px #00ff00;
+            display: inline-block;
         }
 
         .social-media a:hover {
             text-decoration: underline;
+            text-shadow: 0 0 10px #00ff00;
         }
 
         .social-media img {
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
             vertical-align: middle;
             margin-right: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .social-media a:hover img {
+            transform: scale(1.2);
         }
 
         .description {
             margin-top: 30px;
             color: #00ff00;
+            font-size: 16px;
+            text-shadow: 0 0 5px #00ff00;
         }
 
     </style>

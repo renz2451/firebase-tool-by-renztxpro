@@ -107,6 +107,7 @@
         <button onclick="execute()">Execute Request</button>
         <h2>Response:</h2>
         <pre id="response">Response will appear here...</pre>
+        <button onclick="copyResponse()">Copy Response</button> <!-- Copy Response button -->
     </div>
 
     <script>
@@ -154,6 +155,21 @@
             }).catch((error) => {
                 alert("Failed to paste text: " + error);
             });
+        }
+
+        function copyResponse() {
+            const responseBox = document.getElementById('response');
+            const text = responseBox.textContent;
+
+            if (text && text !== "Response will appear here...") {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert("Response copied to clipboard!");
+                }).catch((error) => {
+                    alert("Failed to copy response: " + error);
+                });
+            } else {
+                alert("No response to copy.");
+            }
         }
     </script>
 </body>

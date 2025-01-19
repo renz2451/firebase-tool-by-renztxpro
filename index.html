@@ -11,14 +11,9 @@
             return;
         }
 
-        // Check if data is required and validate JSON for PUT or PATCH methods
-        if ((method === "PUT" || method === "PATCH") && !data) {
-            alert("Please enter data for PUT or EDIT requests.");
-            return;
-        }
-
-        if ((method === "PUT" || method === "PATCH") && !isValidJSON(data)) {
-            alert("Invalid JSON format. Please enter valid JSON data.");
+        // Validate JSON for PUT or PATCH methods
+        if ((method === "PUT" || method === "PATCH") && (!data || !isValidJSON(data))) {
+            alert("Invalid or missing JSON data. Please enter valid JSON.");
             return;
         }
 
@@ -39,12 +34,12 @@
             const response = await fetch(`${url}.json`, options);
 
             // Handle response
-            if (!response.ok) {
-                throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
-            }
+            const result = response.ok
+                ? await response.json() // Parse JSON response if successful
+                : { error: `HTTP Error: ${response.status} ${response.statusText}` };
 
-            const result = await response.json();
-            responseBox.textContent = JSON.stringify(result, null, 4);
+            // Display result or error
+            responseBox.textContent = JSON.stringify(result, null, 4) || "No data received.";
         } catch (error) {
             responseBox.textContent = `Error: ${error.message}`;
         }

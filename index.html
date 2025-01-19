@@ -4,172 +4,138 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Firebase Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Courier New', Courier, monospace;
-            color: #00ff00;
-            background-color: black;
-            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             height: 100vh;
+            overflow: hidden;
+            position: relative;
         }
 
-        /* Background animation for hacker theme */
         .matrix-background {
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
-            pointer-events: none;
+            overflow: hidden;
         }
 
         .matrix-background div {
             position: absolute;
-            color: #00ff00;
-            font-size: 24px;
-            animation: matrix 0.1s linear infinite;
+            font-size: 18px;
+            color: rgba(0, 255, 0, 0.6);
+            animation: rain 5s linear infinite;
         }
 
-        @keyframes matrix {
-            0% { top: -100%; }
-            100% { top: 100%; }
+        @keyframes rain {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(200%); }
         }
 
-        /* Title Animation */
+        .glass-container {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+
         h1 {
-            margin: 0;
-            padding: 20px;
-            background-color: #00ff00;
-            color: black;
-            font-size: 36px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #00ff00;
             text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
-            animation: typing 3s steps(30) 1s infinite normal both;
-        }
-
-        @keyframes typing {
-            0% { width: 0; }
-            100% { width: 100%; }
-        }
-
-        .container {
-            padding: 20px;
-            max-width: 600px;
-            margin: 0 auto;
-            border: 2px solid #00ff00;
-            box-shadow: 0 0 10px #00ff00;
-            background-color: black;
-            z-index: 1;
-            position: relative;
         }
 
         label {
-            text-align: left;
             display: block;
-            margin: 10px 0 5px;
+            margin-top: 10px;
+            font-weight: 600;
         }
 
         input, textarea, select, button {
             width: 100%;
-            background-color: black;
-            color: #00ff00;
-            border: 1px solid #00ff00;
-            padding: 10px;
-            font-size: 16px;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-            text-shadow: 0 0 5px #00ff00;
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.1);
         }
 
         input:focus, textarea:focus, select:focus {
             outline: none;
-            box-shadow: 0 0 5px #00ff00;
+            border: 1px solid #00ff00;
         }
 
         button {
+            margin-top: 20px;
+            background: linear-gradient(90deg, #00ff00, #007f00);
+            color: #000;
+            font-weight: 600;
             cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         button:hover {
-            background-color: #00ff00;
-            color: black;
-            text-shadow: 0 0 10px #00ff00;
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3);
         }
 
         pre {
-            background-color: black;
-            border: 1px solid #00ff00;
-            color: #00ff00;
-            padding: 10px;
             margin-top: 20px;
-            overflow-x: auto;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            padding: 15px;
             text-align: left;
+            color: #00ff00;
         }
 
         .footer {
             margin-top: 20px;
-            font-size: 12px;
+            font-size: 0.8rem;
+            opacity: 0.7;
         }
 
-        .social-media {
-            margin-top: 20px;
-        }
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
 
-        .social-media a {
-            color: #00ff00;
-            text-decoration: none;
-            margin: 10px;
-            font-size: 18px;
-            text-shadow: 0 0 5px #00ff00;
-            display: inline-block;
-        }
-
-        .social-media a:hover {
-            text-decoration: underline;
-            text-shadow: 0 0 10px #00ff00;
-        }
-
-        .social-media img {
-            width: 30px;
-            height: 30px;
-            vertical-align: middle;
-            margin-right: 10px;
-            transition: transform 0.3s ease;
-        }
-
-        .social-media a:hover img {
-            transform: scale(1.2);
-        }
-
-        .description {
-            margin-top: 30px;
-            color: #00ff00;
-            font-size: 16px;
-            text-shadow: 0 0 5px #00ff00;
+            .glass-container {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Matrix background effect -->
     <div class="matrix-background">
-        <!-- Generating multiple lines of falling text -->
-        <div style="left: 10%; animation-duration: 10s;">1 0 1 0 0 1 1 0</div>
-        <div style="left: 20%; animation-duration: 15s;">X O X X O X O X</div>
-        <div style="left: 30%; animation-duration: 12s;">A B C D E F G</div>
-        <div style="left: 40%; animation-duration: 17s;">Y Z P Q R S T</div>
-        <div style="left: 50%; animation-duration: 14s;">1 2 3 4 5 6 7</div>
-        <div style="left: 60%; animation-duration: 16s;">A 0 F C B 2 Z</div>
-        <div style="left: 70%; animation-duration: 18s;">H I J K L M N</div>
+        <!-- Falling matrix characters -->
+        <div style="left: 10%; animation-duration: 4s;">1 0 1 0</div>
+        <div style="left: 25%; animation-duration: 6s;">A B C D</div>
+        <div style="left: 40%; animation-duration: 5s;">Y Z X W</div>
+        <div style="left: 60%; animation-duration: 3.5s;">7 6 5 4</div>
+        <div style="left: 80%; animation-duration: 4.5s;">Q R S T</div>
     </div>
 
-    <h1>Firebase Database Tool</h1>
-    <div class="container">
+    <div class="glass-container">
+        <h1>Firebase Tool</h1>
         <label for="url">Enter Database URL:</label>
         <input type="text" id="url" placeholder="https://your-database.firebaseio.com/">
 
@@ -182,40 +148,14 @@
         </select>
 
         <label for="data">Enter Data (JSON format):</label>
-        <textarea id="data" rows="5" placeholder='{"example": "value"}'></textarea>
+        <textarea id="data" rows="4" placeholder='{"key": "value"}'></textarea>
 
         <button onclick="execute()">Execute Request</button>
-        <button onclick="copyResponse()">Copy Response</button>
-
         <h2>Response:</h2>
         <pre id="response">Response will appear here...</pre>
     </div>
 
-    <div class="footer">
-        <p>Developed by RENZTXPRO</p>
-    </div>
-
-    <!-- Social Media Links Section -->
-    <div class="social-media">
-        <p>Follow My Social Media:</p>
-        <a href="https://www.facebook.com/100015.02.2008.renz" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo">
-            Facebook
-        </a>
-        <a href="https://www.instagram.com/yourusername" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram Logo">
-            Instagram
-        </a>
-        <a href="https://www.youtube.com/channel/yourchannel" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" alt="YouTube Logo">
-            YouTube
-        </a>
-    </div>
-
-    <!-- Description Section -->
-    <div class="description">
-        <p>Welcome to the Firebase Database Tool! This tool allows you to interact with your Firebase Realtime Database by making GET, PUT, DELETE, and PATCH requests. Use it to manage your database effortlessly. Enter your Firebase database URL, select the desired request method, and provide the necessary data in JSON format for PUT or PATCH requests. Happy coding!</p>
-    </div>
+    <div class="footer">Developed by RENZTXPRO</div>
 
     <script>
         async function execute() {
@@ -248,19 +188,6 @@
             } catch (error) {
                 responseBox.textContent = `Error: ${error.message}`;
             }
-        }
-
-        function copyResponse() {
-            const response = document.getElementById('response').textContent;
-            if (response.trim() === "Response will appear here...") {
-                alert("No response to copy.");
-                return;
-            }
-            navigator.clipboard.writeText(response).then(() => {
-                alert("Response copied to clipboard.");
-            }).catch(err => {
-                alert("Failed to copy response: " + err.message);
-            });
         }
     </script>
 </body>

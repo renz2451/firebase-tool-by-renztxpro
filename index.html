@@ -3,41 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobile Legends Account Search</title>
+    <title>Firebase Tool</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #1a1a1a;
+            font-family: 'Courier New', Courier, monospace;
+            background-color: black;
             color: #00ff00;
             text-align: center;
+            overflow-x: hidden;
+            position: relative;
+            height: 100vh;
+        }
+
+        /* Background animation for hacker theme */
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            z-index: -1;
+            animation: digitalRain 5s linear infinite;
+        }
+
+        @keyframes digitalRain {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 0 100%;
+            }
+        }
+
+        .background::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 200%;
+            background: url('https://www.ionos.com/digitalguide/fileadmin/DigitalGuide/Images/Matrix_1.svg') repeat;
+            animation: rain 0.5s linear infinite;
+        }
+
+        /* Title Animation */
+        h1 {
+            margin: 0;
+            padding: 20px;
+            background-color: #00ff00;
+            color: black;
+            font-size: 36px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+            animation: typing 3s steps(30) 1s infinite normal both;
+        }
+
+        @keyframes typing {
+            0% { width: 0; }
+            100% { width: 100%; }
         }
 
         .container {
             padding: 20px;
-            margin: 50px auto;
             max-width: 600px;
-            background-color: black;
+            margin: 0 auto;
             border: 2px solid #00ff00;
-            border-radius: 10px;
-            box-shadow: 0 0 15px #00ff00;
+            box-shadow: 0 0 10px #00ff00;
+            background-color: black;
+            z-index: 1;
         }
 
-        input, button {
+        label {
+            text-align: left;
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input, textarea, select, button {
             width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            margin: 10px 0;
             background-color: black;
             color: #00ff00;
             border: 1px solid #00ff00;
-            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            text-shadow: 0 0 5px #00ff00;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 5px #00ff00;
+        }
+
+        button {
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
         }
 
         button:hover {
             background-color: #00ff00;
             color: black;
+            text-shadow: 0 0 10px #00ff00;
         }
 
         pre {
@@ -50,71 +122,145 @@
             text-align: left;
         }
 
-        h1 {
-            color: #00ff00;
-            font-size: 36px;
-            margin-bottom: 20px;
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
         }
+
+        .social-media {
+            margin-top: 20px;
+        }
+
+        .social-media a {
+            color: #00ff00;
+            text-decoration: none;
+            margin: 10px;
+            font-size: 18px;
+            text-shadow: 0 0 5px #00ff00;
+            display: inline-block;
+        }
+
+        .social-media a:hover {
+            text-decoration: underline;
+            text-shadow: 0 0 10px #00ff00;
+        }
+
+        .social-media img {
+            width: 30px;
+            height: 30px;
+            vertical-align: middle;
+            margin-right: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .social-media a:hover img {
+            transform: scale(1.2);
+        }
+
+        .description {
+            margin-top: 30px;
+            color: #00ff00;
+            font-size: 16px;
+            text-shadow: 0 0 5px #00ff00;
+        }
+
     </style>
 </head>
 <body>
-
-    <h1>Mobile Legends Account Search</h1>
+    <div class="background"></div>
+    <h1>Firebase Database Tool</h1>
     <div class="container">
-        <label for="accountId">Enter Mobile Legends Account ID:</label>
-        <input type="text" id="accountId" placeholder="Enter Account ID" />
+        <label for="url">Enter Database URL:</label>
+        <input type="text" id="url" placeholder="https://your-database.firebaseio.com/">
 
-        <button onclick="searchAccount()">Search Account</button>
+        <label for="method">Select Request Method:</label>
+        <select id="method">
+            <option value="GET">GET</option>
+            <option value="PUT">PUT</option>
+            <option value="DELETE">DELETE</option>
+            <option value="PATCH">EDIT</option>
+        </select>
 
-        <h2>Account Details:</h2>
-        <pre id="accountDetails">Account details will appear here...</pre>
+        <label for="data">Enter Data (JSON format):</label>
+        <textarea id="data" rows="5" placeholder='{"example": "value"}'></textarea>
+
+        <button onclick="execute()">Execute Request</button>
+        <button onclick="copyResponse()">Copy Response</button>
+
+        <h2>Response:</h2>
+        <pre id="response">Response will appear here...</pre>
+    </div>
+
+    <div class="footer">
+        <p>Developed by RENZTXPRO</p>
+    </div>
+
+    <!-- Social Media Links Section -->
+    <div class="social-media">
+        <p>Follow My Social Media:</p>
+        <a href="https://www.facebook.com/100015.02.2008.renz" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo">
+            Facebook
+        </a>
+        <a href="https://www.instagram.com/yourusername" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram Logo">
+            Instagram
+        </a>
+        <a href="https://www.youtube.com/channel/yourchannel" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" alt="YouTube Logo">
+            YouTube
+        </a>
+    </div>
+
+    <!-- Description Section -->
+    <div class="description">
+        <p>Welcome to the Firebase Database Tool! This tool allows you to interact with your Firebase Realtime Database by making GET, PUT, DELETE, and PATCH requests. Use it to manage your database effortlessly. Enter your Firebase database URL, select the desired request method, and provide the necessary data in JSON format for PUT or PATCH requests. Happy coding!</p>
     </div>
 
     <script>
-        // Mock data simulating Mobile Legends account details
-        const mockData = {
-            "123456": {
-                level: 30,
-                skinLevel: 15,
-                rank: "Mythic",
-                accountAge: "2 years"
-            },
-            "654321": {
-                level: 50,
-                skinLevel: 25,
-                rank: "Legend",
-                accountAge: "4 years"
-            },
-            "789123": {
-                level: 10,
-                skinLevel: 5,
-                rank: "Master",
-                accountAge: "6 months"
-            }
-        };
+        async function execute() {
+            const url = document.getElementById('url').value.trim();
+            const method = document.getElementById('method').value;
+            const data = document.getElementById('data').value.trim();
+            const responseBox = document.getElementById('response');
 
-        function searchAccount() {
-            const accountId = document.getElementById('accountId').value.trim();
-            const accountDetails = document.getElementById('accountDetails');
-
-            if (accountId === "") {
-                alert("Please enter a valid account ID.");
+            if (!url) {
+                alert("Please enter a valid database URL.");
                 return;
             }
 
-            // Simulate fetching account data
-            if (mockData[accountId]) {
-                const accountInfo = mockData[accountId];
-                const accountInfoText = `
-Level: ${accountInfo.level}
-Skin Level: ${accountInfo.skinLevel}
-Rank: ${accountInfo.rank}
-Account Age: ${accountInfo.accountAge}
-                `;
-                accountDetails.textContent = accountInfoText;
-            } else {
-                accountDetails.textContent = "Account ID not found. Please check the ID.";
+            if ((method === "PUT" || method === "PATCH") && !data) {
+                alert("Please enter data for PUT or EDIT requests.");
+                return;
             }
+
+            try {
+                responseBox.textContent = "Processing...";
+                const options = { method };
+                if (method === "PUT" || method === "PATCH") {
+                    options.body = data;
+                    options.headers = { 'Content-Type': 'application/json' };
+                }
+
+                const response = await fetch(url + ".json", options);
+                const result = await response.json();
+                responseBox.textContent = JSON.stringify(result, null, 4);
+            } catch (error) {
+                responseBox.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        function copyResponse() {
+            const response = document.getElementById('response').textContent;
+            if (response.trim() === "Response will appear here...") {
+                alert("No response to copy.");
+                return;
+            }
+            navigator.clipboard.writeText(response).then(() => {
+                alert("Response copied to clipboard.");
+            }).catch(err => {
+                alert("Failed to copy response: " + err.message);
+            });
         }
     </script>
 </body>

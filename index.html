@@ -21,7 +21,6 @@
             color: black;
             font-size: 24px;
             text-transform: uppercase;
-            cursor: pointer; /* Make the header clickable */
         }
 
         .container {
@@ -73,48 +72,31 @@
             font-size: 12px;
         }
 
-        /* Drawer styles */
-        #drawer {
-            height: 100%;
-            width: 250px;
-            position: fixed;
-            top: 0;
-            left: -250px; /* Drawer is initially off-screen */
-            background-color: #333;
-            color: #fff;
-            padding-top: 20px;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
-            transition: left 0.3s ease-in-out; /* Smooth slide-in */
+        /* Facebook link style */
+        .facebook-link {
+            margin-top: 10px;
         }
 
-        #drawer a {
-            padding: 10px 15px;
-            text-decoration: none;
-            font-size: 18px;
+        .facebook-link a {
             color: #00ff00;
-            display: block;
-            transition: 0.3s;
+            text-decoration: none;
+            font-size: 16px;
         }
 
-        #drawer a:hover {
-            background-color: #575757;
-        }
-
-        .social-media {
-            display: flex;
-            align-items: center;
-            padding: 10px;
+        .facebook-link a:hover {
+            text-decoration: underline;
         }
 
         .social-media img {
             width: 40px;
             height: 40px;
+            vertical-align: middle;
             margin-right: 10px;
         }
     </style>
 </head>
 <body>
-    <h1 id="header">Firebase Database Tool</h1>
+    <h1>Firebase Database Tool</h1>
     <div class="container">
         <label for="url">Enter Database URL:</label>
         <input type="text" id="url" placeholder="https://your-database.firebaseio.com/">
@@ -139,13 +121,12 @@
 
     <div class="footer">
         <p>Developed by RENZTXPRO</p>
-    </div>
-
-    <!-- Drawer -->
-    <div id="drawer">
-        <div class="social-media">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo">
-            <a href="https://www.facebook.com/100015.02.2008.renz" target="_blank">Visit Facebook Profile</a>
+        <!-- Facebook link -->
+        <div class="facebook-link">
+            <a href="https://www.facebook.com/100015.02.2008.renz" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo">
+                Visit my Facebook Profile
+            </a>
         </div>
     </div>
 
@@ -194,18 +175,6 @@
                 alert("Failed to copy response: " + err.message);
             });
         }
-
-        // Toggle the drawer visibility when the header is clicked
-        document.getElementById('header').addEventListener('click', function() {
-            const drawer = document.getElementById('drawer');
-            const currentLeft = drawer.style.left;
-            // Toggle the drawer visibility
-            if (currentLeft === '0px') {
-                drawer.style.left = '-250px'; // Slide out
-            } else {
-                drawer.style.left = '0'; // Slide in
-            }
-        });
     </script>
 </body>
 </html>

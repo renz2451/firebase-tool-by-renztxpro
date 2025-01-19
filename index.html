@@ -145,7 +145,7 @@
         async function execute() {
             const url = document.getElementById('url').value.trim();
             const method = document.getElementById('method').value;
-            const data = document.getElementById('data').value.trim();
+            let data = document.getElementById('data').value.trim();
             const responseBox = document.getElementById('response');
 
             if (!url) {
@@ -153,20 +153,36 @@
                 return;
             }
 
-            if ((method === "PUT" || method === "PATCH") && !data) {
-                alert("Please enter data for PUT or EDIT requests.");
+            // Parse the JSON data if available
+            if ((method === "PUT" || method === "PATCH") && data) {
+                try {
+                    data = JSON.parse(data); // Parse the input to JSON
+                } catch (error) {
+                    alert("Invalid JSON format. Please enter valid JSON data.");
+                    return;
+                }
+            } else if ((method === "PUT" || method === "PATCH") && !data) {
+                alert("Please enter data for PUT or PATCH requests.");
                 return;
             }
 
             try {
                 responseBox.textContent = "Processing...";
-                const options = { method };
+                const options = { 
+                    method,
+                    headers: { 'Content-Type': 'application/json' }
+                };
+
+                // Only include the body for PUT or PATCH requests
                 if (method === "PUT" || method === "PATCH") {
-                    options.body = data;
-                    options.headers = { 'Content-Type': 'application/json' };
+                    options.body = JSON.stringify(data); // Convert data back to string
                 }
 
                 const response = await fetch(url + ".json", options);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
                 const result = await response.json();
                 responseBox.textContent = JSON.stringify(result, null, 4);
             } catch (error) {

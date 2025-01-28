@@ -3,229 +3,291 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firebase Destroyer Tool</title> <!-- Updated title -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Firebase Destroyer Tool PRO</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@500&display=swap');
+
+        :root {
+            --neon-blue: #00d1ff;
+            --neon-purple: #8a2be2;
+            --dark-bg: #0a0a0f;
+            --text-color: #e0e0e0;
+        }
+
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--dark-bg);
+            color: var(--text-color);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            position: relative;
-            flex-direction: column;
+            margin: 0;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(138, 43, 226, 0.1) 0%, transparent 20%),
+                linear-gradient(45deg, #0a0a0f 0%, #1a1a2f 100%);
+            animation: bg-pulse 10s infinite alternate;
         }
 
-        .glass-container {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        .container {
+            background: rgba(10, 10, 15, 0.95);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 209, 255, 0.1);
             width: 90%;
-            max-width: 500px;
-            text-align: center;
-            margin-top: 20px;
+            max-width: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, var(--neon-blue), transparent);
+            animation: border-glow 4s linear infinite;
+            opacity: 0.3;
         }
 
         h1 {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            color: #00ff00;
-            text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            text-align: center;
+            margin: 0 0 2rem 0;
+            text-shadow: 0 0 10px rgba(0, 209, 255, 0.3);
+            animation: title-glow 2s ease-in-out infinite alternate;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
         }
 
         label {
             display: block;
-            margin-top: 10px;
-            font-weight: 600;
-            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--neon-purple);
         }
 
-        input, textarea, select, button {
-            width: 100%; /* Full width of the container */
-            margin-top: 10px;
+        input[type="text"], textarea {
+            width: 100%;
             padding: 12px;
-            border-radius: 8px;
-            border: none;
-            font-size: 1rem;
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.1);
-            box-sizing: border-box; /* Ensure padding is included in width */
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--neon-blue);
+            color: var(--text-color);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-family: 'JetBrains Mono', monospace;
         }
 
-        textarea {
-            min-height: 120px; /* Minimum height for the textarea */
-            max-height: 300px; /* Max height to allow scrolling */
-            resize: vertical; /* Allow vertical resizing */
-            font-size: 1rem; /* Increase font size for readability */
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--neon-blue);
         }
 
-        button {
-            margin-top: 10px;
-            background: linear-gradient(90deg, #00ff00, #007f00);
-            color: #000;
-            font-weight: 600;
+        .method-selector {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .method-btn {
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid transparent;
+            color: var(--text-color);
+            border-radius: 4px;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s ease;
         }
 
-        button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3);
+        .method-btn.active {
+            border-color: var(--neon-purple);
+            background: rgba(138, 43, 226, 0.1);
+            box-shadow: 0 0 8px var(--neon-purple);
         }
 
-        pre {
-            margin-top: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: 10px;
+        .execute-btn {
+            width: 100%;
             padding: 15px;
-            text-align: left;
-            color: #00ff00;
-            font-size: 0.9rem;
-            overflow-x: auto;
-            max-height: 300px;
-            overflow-y: auto;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            border: none;
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .footer {
+        .execute-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.3);
+        }
+
+        .response-box {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1.5rem;
+            min-height: 100px;
+            border: 1px solid var(--neon-blue);
+            position: relative;
+        }
+
+        .copy-btn {
             position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.8rem;
-            opacity: 0.7;
-            text-align: center;
+            right: 10px;
+            top: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: var(--neon-blue);
+            color: #000;
+        }
+
+        @keyframes border-glow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes title-glow {
+            0% { text-shadow: 0 0 10px rgba(0, 209, 255, 0.3); }
+            100% { text-shadow: 0 0 15px rgba(0, 209, 255, 0.5); }
+        }
+
+        @keyframes bg-pulse {
+            0% { background-size: 100% 100%, auto; }
+            100% { background-size: 120% 120%, auto; }
         }
     </style>
 </head>
 <body>
-    <div class="glass-container">
-        <h1>Firebase Destroyer Tool</h1> <!-- Updated title -->
-        <label for="url">Enter Firebase Database URL:</label>
-        <input type="text" id="url" placeholder="https://your-project-id.firebaseio.com/your-node" oninput="updateBackground()">
-        <button onclick="pasteText('url')">Paste URL</button> <!-- Paste URL button -->
+    <div class="container">
+        <h1>🔥 FIREBASE DESTROYER PRO</h1>
+        
+        <!-- Database URL Input -->
+        <div class="input-group">
+            <label>Enter Firebase Database URL:</label>
+            <input type="text" id="database-url" placeholder="https://your-project.id.firebaseio.com/your-node">
+        </div>
 
-        <label for="method">Select Request Method:</label>
-        <select id="method">
-            <option value="GET">GET</option>
-            <option value="PUT">PUT</option>
-            <option value="DELETE">DELETE</option>
-            <option value="PATCH">EDIT</option>
-        </select>
+        <!-- Method Selector -->
+        <div class="method-selector">
+            <div class="method-btn active">GET</div>
+            <div class="method-btn">PUT</div>
+            <div class="method-btn">DELETE</div>
+            <div class="method-btn">EDIT</div>
+            <div class="method-btn">READ RULES</div>
+        </div>
 
-        <label for="data">Enter Data (JSON format):</label>
-        <textarea id="data" placeholder='{"key": "value"}' oninput="updateBackground()"></textarea>
-        <button onclick="pasteText('data')">Paste Data</button> <!-- Paste Data button -->
+        <!-- Rules Editor -->
+        <div class="input-group">
+            <label>Edit Firebase Rules:</label>
+            <textarea id="rules-editor" rows="6" placeholder="Paste your Firebase rules here..."></textarea>
+        </div>
 
-        <button onclick="execute()">Execute Request</button>
-        <h2>Response:</h2>
-        <pre id="response">Response will appear here...</pre>
-        <button onclick="copyToClipboard()">Copy Response</button> <!-- Copy Response button -->
+        <!-- Execute Button -->
+        <button class="execute-btn" id="execute-btn">EXECUTE REQUEST</button>
+
+        <!-- Response Box -->
+        <div class="response-box">
+            <button class="copy-btn" id="copy-btn">COPY</button>
+            <pre id="response">Response will appear here...</pre>
+        </div>
     </div>
 
-    <div class="footer">Developed by RENZTXPRO</div>
-
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js"></script>
     <script>
-        function updateBackground() {
-            const url = document.getElementById('url').value.trim();
-            const data = document.getElementById('data').value.trim();
-            const background = document.body;
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            databaseURL: "YOUR_DATABASE_URL",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
 
-            if (url && data) {
-                background.style.background = 'linear-gradient(135deg, #2c5364, #203a43)';
-            } else if (url) {
-                background.style.background = 'linear-gradient(135deg, #0f2027, #203a43)';
-            } else if (data) {
-                background.style.background = 'linear-gradient(135deg, #203a43, #2c5364)';
-            } else {
-                background.style.background = 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)';
-            }
-        }
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
 
-        async function execute() {
-            const url = document.getElementById('url').value.trim();
-            const method = document.getElementById('method').value;
-            let data = document.getElementById('data').value.trim();
-            const responseBox = document.getElementById('response');
+        // Method selection
+        const methodButtons = document.querySelectorAll('.method-btn');
+        methodButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                methodButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
 
-            if (!url) {
-                alert("Please enter a valid Firebase database URL.");
-                return;
-            }
+        // Execute button functionality
+        const executeBtn = document.getElementById('execute-btn');
+        executeBtn.addEventListener('click', async () => {
+            executeBtn.disabled = true;
+            executeBtn.innerHTML = 'EXECUTING...';
 
-            // Parse the JSON data if available
-            if ((method === "PUT" || method === "PATCH") && data) {
-                try {
-                    data = JSON.parse(data); // Parse the input to JSON
-                } catch (error) {
-                    alert("Invalid JSON format. Please enter valid JSON data.");
-                    return;
-                }
-            } else if ((method === "PUT" || method === "PATCH") && !data) {
-                alert("Please enter data for PUT or PATCH requests.");
-                return;
-            }
+            const url = document.getElementById('database-url').value;
+            const method = document.querySelector('.method-btn.active').textContent;
+            const rules = document.getElementById('rules-editor').value;
 
             try {
-                responseBox.textContent = "Processing...";
-                const options = { 
-                    method,
-                    headers: { 'Content-Type': 'application/json' }
-                };
-
-                // Only include the body for PUT or PATCH requests
-                if (method === "PUT" || method === "PATCH") {
-                    options.body = JSON.stringify(data); // Convert data back to string
+                let response;
+                switch (method) {
+                    case 'GET':
+                        // Fetch current rules
+                        const rulesRef = database.ref('.settings/rules');
+                        const snapshot = await rulesRef.once('value');
+                        response = snapshot.val();
+                        document.getElementById('rules-editor').value = JSON.stringify(response, null, 2);
+                        break;
+                    case 'PUT':
+                        // Update rules
+                        const parsedRules = JSON.parse(rules);
+                        await database.ref('.settings/rules').set(parsedRules);
+                        response = { status: 'success', message: 'Rules updated successfully' };
+                        break;
+                    case 'READ RULES':
+                        // Read rules
+                        const rulesSnapshot = await database.ref('.settings/rules').once('value');
+                        response = rulesSnapshot.val();
+                        document.getElementById('rules-editor').value = JSON.stringify(response, null, 2);
+                        break;
+                    default:
+                        throw new Error('Invalid method for rules editor');
                 }
 
-                const response = await fetch(url + ".json", options);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-                const result = await response.json();
-                responseBox.textContent = JSON.stringify(result, null, 4);
+                document.getElementById('response').textContent = JSON.stringify(response, null, 2);
             } catch (error) {
-                responseBox.textContent = `Error: ${error.message}`;
+                document.getElementById('response').textContent = JSON.stringify({ error: error.message }, null, 2);
+            } finally {
+                executeBtn.innerHTML = 'EXECUTE REQUEST';
+                executeBtn.disabled = false;
             }
-        }
+        });
 
-        function pasteText(elementId) {
-            navigator.clipboard.readText().then((text) => {
-                const element = document.getElementById(elementId);
-                if (element) {
-                    element.value = text;
-                    alert(`Pasted into ${elementId}!`);
-                } else {
-                    alert(`Element with ID ${elementId} not found.`);
-                }
-            }).catch((error) => {
-                alert("Failed to paste text: " + error);
-            });
-        }
-
-        function copyToClipboard() {
-            const responseBox = document.getElementById('response');
-            const text = responseBox.textContent;
-
-            if (text && text !== "Response will appear here...") {
-                navigator.clipboard.writeText(text).then(() => {
-                    alert("Response copied to clipboard!");
-                }).catch((error) => {
-                    alert("Failed to copy response: " + error);
-                });
-            } else {
-                alert("No response to copy.");
-            }
-        }
+        // Copy functionality
+        document.getElementById('copy-btn').addEventListener('click', () => {
+            const text = document.getElementById('response').textContent;
+            navigator.clipboard.writeText(text);
+            alert('Response copied to clipboard!');
+        });
     </script>
 </body>
 </html>

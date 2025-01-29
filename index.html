@@ -20,22 +20,26 @@
             min-height: 100vh;
             border: 2px solid var(--neon-green);
             box-shadow: inset 0 0 15px var(--neon-green);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .container {
-            max-width: 800px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 600px;
             border: 1px solid var(--neon-green);
             padding: 2rem;
             background: rgba(10, 10, 10, 0.95);
             position: relative;
+            box-sizing: border-box;
         }
 
         .title {
             text-align: center;
-            font-size: 2.5rem;
+            font-size: 2rem;
             text-shadow: 0 0 10px var(--neon-green);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             letter-spacing: 2px;
         }
 
@@ -46,18 +50,19 @@
         .input-group label {
             display: block;
             margin-bottom: 0.5rem;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
         input, textarea {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             background: #000;
             border: 1px solid var(--neon-green);
             color: var(--neon-green);
             font-family: 'JetBrains Mono', monospace;
             margin-bottom: 1rem;
             transition: all 0.3s ease;
+            box-sizing: border-box;
         }
 
         input:focus, textarea:focus {
@@ -67,13 +72,13 @@
 
         .method-buttons {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 1rem;
-            margin: 2rem 0;
+            margin: 1.5rem 0;
         }
 
         .btn {
-            padding: 12px;
+            padding: 10px;
             background: #000;
             border: 1px solid var(--neon-green);
             color: var(--neon-green);
@@ -81,6 +86,8 @@
             transition: all 0.3s ease;
             text-transform: uppercase;
             font-weight: bold;
+            text-align: center;
+            box-sizing: border-box;
         }
 
         .btn:hover {
@@ -91,9 +98,9 @@
 
         .execute-btn {
             width: 100%;
-            padding: 15px;
-            font-size: 1.2rem;
-            margin: 2rem 0;
+            padding: 12px;
+            font-size: 1rem;
+            margin: 1.5rem 0;
         }
 
         .response-box {
@@ -101,8 +108,13 @@
             border: 1px solid var(--neon-green);
             padding: 1rem;
             min-height: 150px;
-            margin-top: 2rem;
+            max-height: 300px; /* Limit height for scrolling */
+            margin-top: 1.5rem;
             position: relative;
+            box-sizing: border-box;
+            overflow-y: auto; /* Add scrollbar for overflow */
+            white-space: pre-wrap; /* Enable text wrapping */
+            word-wrap: break-word; /* Break long words */
         }
 
         .response-box::before {
@@ -123,6 +135,20 @@
             from { text-shadow: 0 0 5px var(--neon-green); }
             to { text-shadow: 0 0 15px var(--neon-green); }
         }
+
+        @media (max-width: 600px) {
+            .title {
+                font-size: 1.5rem;
+            }
+
+            .method-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .btn {
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -138,13 +164,12 @@
             <button class="btn" onclick="setMethod('GET')">GET</button>
             <button class="btn" onclick="setMethod('PUT')">PUT</button>
             <button class="btn" onclick="setMethod('DELETE')">DELETE</button>
-            <button class="btn" onclick="setMethod('PATCH')">EDIT</button>
-            <button class="btn" onclick="setMethod('READ_RULES')">READ RULES</button>
+            <button class="btn" onclick="setMethod('PATCH')">PATCH</button>
         </div>
 
         <div class="input-group">
-            <label>EDIT FIREBASE RULES</label>
-            <textarea id="firebase-rules" rows="8" placeholder="Paste your Firebase rules here..."></textarea>
+            <label>ENTER DATA (JSON FORMAT)</label>
+            <textarea id="firebase-data" rows="6" placeholder='{"key": "value"}'></textarea>
         </div>
 
         <button class="btn execute-btn" onclick="executeRequest()">EXECUTE REQUEST</button>
@@ -166,7 +191,7 @@
         // Execute the request
         async function executeRequest() {
             const url = document.getElementById('firebase-url').value.trim();
-            const rules = document.getElementById('firebase-rules').value.trim();
+            const data = document.getElementById('firebase-data').value.trim();
             const responseOutput = document.getElementById('response-output');
 
             if (!url) {
@@ -181,29 +206,35 @@
                 if (selectedMethod === 'GET') {
                     response = await fetch(`${url}.json`);
                 } else if (selectedMethod === 'PUT') {
+                    if (!data) {
+                        alert("Please enter data for PUT request.");
+                        return;
+                    }
                     response = await fetch(`${url}.json`, {
                         method: 'PUT',
-                        body: rules,
+                        body: data,
                         headers: { 'Content-Type': 'application/json' }
                     });
                 } else if (selectedMethod === 'DELETE') {
                     response = await fetch(`${url}.json`, { method: 'DELETE' });
                 } else if (selectedMethod === 'PATCH') {
+                    if (!data) {
+                        alert("Please enter data for PATCH request.");
+                        return;
+                    }
                     response = await fetch(`${url}.json`, {
                         method: 'PATCH',
-                        body: rules,
+                        body: data,
                         headers: { 'Content-Type': 'application/json' }
                     });
-                } else if (selectedMethod === 'READ_RULES') {
-                    response = await fetch(`${url}/.settings/rules.json`);
                 }
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
-                const data = await response.json();
-                responseOutput.textContent = JSON.stringify(data, null, 4);
+                const result = await response.json();
+                responseOutput.textContent = JSON.stringify(result, null, 4);
             } catch (error) {
                 responseOutput.textContent = `Error: ${error.message}`;
             }

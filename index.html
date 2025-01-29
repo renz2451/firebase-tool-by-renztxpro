@@ -3,291 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firebase Destroyer Tool PRO</title>
+    <title>FIREBASE DESTROYER PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@500&display=swap');
-
         :root {
-            --neon-blue: #00d1ff;
-            --neon-purple: #8a2be2;
-            --dark-bg: #0a0a0f;
-            --text-color: #e0e0e0;
+            --neon-green: #0aff0a;
+            --dark-bg: #0a0a0a;
         }
 
         body {
-            font-family: 'JetBrains Mono', monospace;
-            background: var(--dark-bg);
-            color: var(--text-color);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             margin: 0;
-            background-image: 
-                radial-gradient(circle at 50% 50%, rgba(138, 43, 226, 0.1) 0%, transparent 20%),
-                linear-gradient(45deg, #0a0a0f 0%, #1a1a2f 100%);
-            animation: bg-pulse 10s infinite alternate;
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            background-color: var(--dark-bg);
+            color: var(--neon-green);
+            min-height: 100vh;
+            border: 2px solid var(--neon-green);
+            box-shadow: inset 0 0 15px var(--neon-green);
         }
 
         .container {
-            background: rgba(10, 10, 15, 0.95);
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid var(--neon-green);
             padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid var(--neon-blue);
-            box-shadow: 0 0 20px rgba(0, 209, 255, 0.1);
-            width: 90%;
-            max-width: 600px;
+            background: rgba(10, 10, 10, 0.95);
             position: relative;
-            overflow: hidden;
         }
 
-        .container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, var(--neon-blue), transparent);
-            animation: border-glow 4s linear infinite;
-            opacity: 0.3;
-        }
-
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--neon-blue);
+        .title {
             text-align: center;
-            margin: 0 0 2rem 0;
-            text-shadow: 0 0 10px rgba(0, 209, 255, 0.3);
-            animation: title-glow 2s ease-in-out infinite alternate;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px var(--neon-green);
+            margin-bottom: 2rem;
+            letter-spacing: 2px;
         }
 
         .input-group {
             margin-bottom: 1.5rem;
         }
 
-        label {
+        .input-group label {
             display: block;
             margin-bottom: 0.5rem;
-            color: var(--neon-purple);
+            font-size: 1.1rem;
         }
 
-        input[type="text"], textarea {
+        input, textarea {
             width: 100%;
             padding: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--neon-blue);
-            color: var(--text-color);
-            border-radius: 6px;
-            transition: all 0.3s ease;
+            background: #000;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
             font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
         }
 
-        input[type="text"]:focus, textarea:focus {
+        input:focus, textarea:focus {
             outline: none;
-            box-shadow: 0 0 10px var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-green);
         }
 
-        .method-selector {
+        .method-buttons {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            margin: 1.5rem 0;
+            gap: 1rem;
+            margin: 2rem 0;
         }
 
-        .method-btn {
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid transparent;
-            color: var(--text-color);
-            border-radius: 4px;
+        .btn {
+            padding: 12px;
+            background: #000;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
             cursor: pointer;
             transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: bold;
         }
 
-        .method-btn.active {
-            border-color: var(--neon-purple);
-            background: rgba(138, 43, 226, 0.1);
-            box-shadow: 0 0 8px var(--neon-purple);
+        .btn:hover {
+            background: var(--neon-green);
+            color: #000;
+            box-shadow: 0 0 15px var(--neon-green);
         }
 
         .execute-btn {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
-            border: none;
-            color: #fff;
-            font-weight: bold;
-            text-transform: uppercase;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .execute-btn:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 15px rgba(138, 43, 226, 0.3);
+            font-size: 1.2rem;
+            margin: 2rem 0;
         }
 
         .response-box {
-            background: rgba(0, 0, 0, 0.3);
+            background: #000;
+            border: 1px solid var(--neon-green);
             padding: 1rem;
-            border-radius: 6px;
-            margin-top: 1.5rem;
-            min-height: 100px;
-            border: 1px solid var(--neon-blue);
+            min-height: 150px;
+            margin-top: 2rem;
             position: relative;
         }
 
-        .copy-btn {
+        .response-box::before {
+            content: "Response Output";
             position: absolute;
-            right: 10px;
-            top: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--neon-blue);
-            color: var(--neon-blue);
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            top: -10px;
+            left: 10px;
+            background: var(--dark-bg);
+            padding: 0 5px;
+            font-size: 0.9rem;
         }
 
-        .copy-btn:hover {
-            background: var(--neon-blue);
-            color: #000;
+        .glow {
+            animation: glow 1.5s infinite alternate;
         }
 
-        @keyframes border-glow {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes title-glow {
-            0% { text-shadow: 0 0 10px rgba(0, 209, 255, 0.3); }
-            100% { text-shadow: 0 0 15px rgba(0, 209, 255, 0.5); }
-        }
-
-        @keyframes bg-pulse {
-            0% { background-size: 100% 100%, auto; }
-            100% { background-size: 120% 120%, auto; }
+        @keyframes glow {
+            from { text-shadow: 0 0 5px var(--neon-green); }
+            to { text-shadow: 0 0 15px var(--neon-green); }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🔥 FIREBASE DESTROYER PRO</h1>
+        <h1 class="title glow">FIREBASE DESTROYER PRO</h1>
         
-        <!-- Database URL Input -->
         <div class="input-group">
-            <label>Enter Firebase Database URL:</label>
-            <input type="text" id="database-url" placeholder="https://your-project.id.firebaseio.com/your-node">
+            <label>ENTER FIREBASE DATABASE URL</label>
+            <input type="text" id="firebase-url" placeholder="https://your-project-id.firebaseio.com/your-node">
         </div>
 
-        <!-- Method Selector -->
-        <div class="method-selector">
-            <div class="method-btn active">GET</div>
-            <div class="method-btn">PUT</div>
-            <div class="method-btn">DELETE</div>
-            <div class="method-btn">EDIT</div>
-            <div class="method-btn">READ RULES</div>
+        <div class="method-buttons">
+            <button class="btn" onclick="setMethod('GET')">GET</button>
+            <button class="btn" onclick="setMethod('PUT')">PUT</button>
+            <button class="btn" onclick="setMethod('DELETE')">DELETE</button>
+            <button class="btn" onclick="setMethod('PATCH')">EDIT</button>
+            <button class="btn" onclick="setMethod('READ_RULES')">READ RULES</button>
         </div>
 
-        <!-- Rules Editor -->
         <div class="input-group">
-            <label>Edit Firebase Rules:</label>
-            <textarea id="rules-editor" rows="6" placeholder="Paste your Firebase rules here..."></textarea>
+            <label>EDIT FIREBASE RULES</label>
+            <textarea id="firebase-rules" rows="8" placeholder="Paste your Firebase rules here..."></textarea>
         </div>
 
-        <!-- Execute Button -->
-        <button class="execute-btn" id="execute-btn">EXECUTE REQUEST</button>
+        <button class="btn execute-btn" onclick="executeRequest()">EXECUTE REQUEST</button>
 
-        <!-- Response Box -->
         <div class="response-box">
-            <button class="copy-btn" id="copy-btn">COPY</button>
-            <pre id="response">Response will appear here...</pre>
+            <pre id="response-output">Response will appear here...</pre>
         </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js"></script>
     <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            databaseURL: "YOUR_DATABASE_URL",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
+        let selectedMethod = 'GET';
 
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+        // Set the selected method
+        function setMethod(method) {
+            selectedMethod = method;
+            alert(`Method set to: ${method}`);
+        }
 
-        // Method selection
-        const methodButtons = document.querySelectorAll('.method-btn');
-        methodButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                methodButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            });
-        });
+        // Execute the request
+        async function executeRequest() {
+            const url = document.getElementById('firebase-url').value.trim();
+            const rules = document.getElementById('firebase-rules').value.trim();
+            const responseOutput = document.getElementById('response-output');
 
-        // Execute button functionality
-        const executeBtn = document.getElementById('execute-btn');
-        executeBtn.addEventListener('click', async () => {
-            executeBtn.disabled = true;
-            executeBtn.innerHTML = 'EXECUTING...';
-
-            const url = document.getElementById('database-url').value;
-            const method = document.querySelector('.method-btn.active').textContent;
-            const rules = document.getElementById('rules-editor').value;
+            if (!url) {
+                alert("Please enter a valid Firebase URL.");
+                return;
+            }
 
             try {
+                responseOutput.textContent = "Processing...";
+
                 let response;
-                switch (method) {
-                    case 'GET':
-                        // Fetch current rules
-                        const rulesRef = database.ref('.settings/rules');
-                        const snapshot = await rulesRef.once('value');
-                        response = snapshot.val();
-                        document.getElementById('rules-editor').value = JSON.stringify(response, null, 2);
-                        break;
-                    case 'PUT':
-                        // Update rules
-                        const parsedRules = JSON.parse(rules);
-                        await database.ref('.settings/rules').set(parsedRules);
-                        response = { status: 'success', message: 'Rules updated successfully' };
-                        break;
-                    case 'READ RULES':
-                        // Read rules
-                        const rulesSnapshot = await database.ref('.settings/rules').once('value');
-                        response = rulesSnapshot.val();
-                        document.getElementById('rules-editor').value = JSON.stringify(response, null, 2);
-                        break;
-                    default:
-                        throw new Error('Invalid method for rules editor');
+                if (selectedMethod === 'GET') {
+                    response = await fetch(`${url}.json`);
+                } else if (selectedMethod === 'PUT') {
+                    response = await fetch(`${url}.json`, {
+                        method: 'PUT',
+                        body: rules,
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                } else if (selectedMethod === 'DELETE') {
+                    response = await fetch(`${url}.json`, { method: 'DELETE' });
+                } else if (selectedMethod === 'PATCH') {
+                    response = await fetch(`${url}.json`, {
+                        method: 'PATCH',
+                        body: rules,
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                } else if (selectedMethod === 'READ_RULES') {
+                    response = await fetch(`${url}/.settings/rules.json`);
                 }
 
-                document.getElementById('response').textContent = JSON.stringify(response, null, 2);
-            } catch (error) {
-                document.getElementById('response').textContent = JSON.stringify({ error: error.message }, null, 2);
-            } finally {
-                executeBtn.innerHTML = 'EXECUTE REQUEST';
-                executeBtn.disabled = false;
-            }
-        });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
 
-        // Copy functionality
-        document.getElementById('copy-btn').addEventListener('click', () => {
-            const text = document.getElementById('response').textContent;
-            navigator.clipboard.writeText(text);
-            alert('Response copied to clipboard!');
-        });
+                const data = await response.json();
+                responseOutput.textContent = JSON.stringify(data, null, 4);
+            } catch (error) {
+                responseOutput.textContent = `Error: ${error.message}`;
+            }
+        }
     </script>
 </body>
 </html>

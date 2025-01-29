@@ -4,70 +4,117 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FIREBASE DESTROYER PRO</title>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --neon-green: #0aff0a;
+            --neon-blue: #00e1ff;
+            --neon-pink: #ff00ff;
             --dark-bg: #0a0a0a;
+            --glass-bg: rgba(10, 10, 10, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --neon-glow-blue: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 40px var(--neon-blue);
+            --neon-glow-pink: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink), 0 0 40px var(--neon-pink);
         }
 
         body {
             margin: 0;
             padding: 20px;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Orbitron', sans-serif;
             background-color: var(--dark-bg);
-            color: var(--neon-green);
+            color: var(--neon-blue);
             min-height: 100vh;
-            border: 2px solid var(--neon-green);
-            box-shadow: inset 0 0 15px var(--neon-green);
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Background Animation */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 20%, var(--dark-bg) 20%, var(--dark-bg) 80%, transparent 80%, transparent),
+                        radial-gradient(circle, transparent 20%, var(--dark-bg) 20%, var(--dark-bg) 80%, transparent 80%, transparent) 50px 50px;
+            background-size: 100px 100px;
+            opacity: 0.2;
+            animation: moveBackground 10s linear infinite;
+        }
+
+        @keyframes moveBackground {
+            from { transform: translateY(0); }
+            to { transform: translateY(100px); }
         }
 
         .container {
             width: 100%;
             max-width: 600px;
-            border: 1px solid var(--neon-green);
+            border: 1px solid var(--glass-border);
             padding: 2rem;
-            background: rgba(10, 10, 10, 0.95);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
             position: relative;
-            box-sizing: border-box;
+            box-shadow: var(--neon-glow-blue);
+            animation: container-glow 3s infinite alternate;
+        }
+
+        @keyframes container-glow {
+            0% { box-shadow: var(--neon-glow-blue); }
+            50% { box-shadow: var(--neon-glow-pink); }
+            100% { box-shadow: var(--neon-glow-blue); }
         }
 
         .title {
             text-align: center;
-            font-size: 2rem;
-            text-shadow: 0 0 10px var(--neon-green);
+            font-size: 2.5rem;
+            text-shadow: var(--neon-glow-blue);
             margin-bottom: 1.5rem;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            animation: text-glow 2s infinite alternate;
+        }
+
+        @keyframes text-glow {
+            0% { text-shadow: var(--neon-glow-blue); }
+            50% { text-shadow: var(--neon-glow-pink); }
+            100% { text-shadow: var(--neon-glow-blue); }
         }
 
         .input-group {
             margin-bottom: 1.5rem;
+            position: relative;
         }
 
         .input-group label {
             display: block;
             margin-bottom: 0.5rem;
             font-size: 1rem;
+            color: var(--neon-blue);
+            text-shadow: var(--neon-glow-blue);
         }
 
         input, textarea {
             width: 100%;
             padding: 10px;
-            background: #000;
-            border: 1px solid var(--neon-green);
-            color: var(--neon-green);
-            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--glass-border);
+            color: var(--neon-blue);
+            font-family: 'Roboto Mono', monospace;
             margin-bottom: 1rem;
             transition: all 0.3s ease;
             box-sizing: border-box;
+            border-radius: 5px;
+            box-shadow: var(--neon-glow-blue);
         }
 
         input:focus, textarea:focus {
             outline: none;
-            box-shadow: 0 0 10px var(--neon-green);
+            border-color: var(--neon-pink);
+            box-shadow: var(--neon-glow-pink);
         }
 
         .method-buttons {
@@ -79,21 +126,31 @@
 
         .btn {
             padding: 10px;
-            background: #000;
-            border: 1px solid var(--neon-green);
-            color: var(--neon-green);
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--glass-border);
+            color: var(--neon-blue);
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
             font-weight: bold;
             text-align: center;
             box-sizing: border-box;
+            border-radius: 5px;
+            box-shadow: var(--neon-glow-blue);
+            animation: btn-glow 2s infinite alternate;
+        }
+
+        @keyframes btn-glow {
+            0% { box-shadow: var(--neon-glow-blue); }
+            50% { box-shadow: var(--neon-glow-pink); }
+            100% { box-shadow: var(--neon-glow-blue); }
         }
 
         .btn:hover {
-            background: var(--neon-green);
-            color: #000;
-            box-shadow: 0 0 15px var(--neon-green);
+            background: var(--neon-blue);
+            color: var(--dark-bg);
+            box-shadow: var(--neon-glow-pink);
+            transform: scale(1.05);
         }
 
         .execute-btn {
@@ -104,17 +161,19 @@
         }
 
         .response-box {
-            background: #000;
-            border: 1px solid var(--neon-green);
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--glass-border);
             padding: 1rem;
             min-height: 150px;
-            max-height: 300px; /* Limit height for scrolling */
+            max-height: 300px;
             margin-top: 1.5rem;
             position: relative;
             box-sizing: border-box;
-            overflow-y: auto; /* Add scrollbar for overflow */
-            white-space: pre-wrap; /* Enable text wrapping */
-            word-wrap: break-word; /* Break long words */
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border-radius: 5px;
+            box-shadow: var(--neon-glow-blue);
         }
 
         .response-box::before {
@@ -125,20 +184,13 @@
             background: var(--dark-bg);
             padding: 0 5px;
             font-size: 0.9rem;
-        }
-
-        .glow {
-            animation: glow 1.5s infinite alternate;
-        }
-
-        @keyframes glow {
-            from { text-shadow: 0 0 5px var(--neon-green); }
-            to { text-shadow: 0 0 15px var(--neon-green); }
+            color: var(--neon-blue);
+            text-shadow: var(--neon-glow-blue);
         }
 
         @media (max-width: 600px) {
             .title {
-                font-size: 1.5rem;
+                font-size: 2rem;
             }
 
             .method-buttons {
@@ -153,7 +205,7 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="title glow">FIREBASE DESTROYER PRO</h1>
+        <h1 class="title">FIREBASE DESTROYER PRO</h1>
         
         <div class="input-group">
             <label>ENTER FIREBASE DATABASE URL</label>
